@@ -1,0 +1,67 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "base",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "dev",
+      "inherits": ["base"],
+      "cacheVariables": {
+        "GAME_HOT_RELOAD": "ON"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": ["base"],
+      "cacheVariables": {
+        "GAME_HOT_RELOAD": "OFF"
+      }
+    },
+    {
+      "name": "clang-dev",
+      "inherits": ["clang", "dev"]
+    },
+    {
+      "name": "clang-release",
+      "inherits": ["clang", "release"]
+    },
+    {
+      "name": "gcc-dev",
+      "inherits": ["gcc", "dev"]
+    },
+    {
+      "name": "gcc-release",
+      "inherits": ["gcc", "release"]
+    },
+    {
+      "name": "web-release",
+      "inherits": ["release"],
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gcc",
+      "hidden": true,
+      "inherits": ["base"],
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    }
+  ]
+}

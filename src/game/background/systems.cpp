@@ -1,0 +1,13 @@
+#include "./systems.hpp"
+#include "./components.hpp"
+
+namespace game::systems {
+
+auto draw_background_color(entt::registry& registry) -> void {
+    auto view = registry.view<const components::BackgroundColor>();
+    for (auto [entity, color] : view.each()) {
+        ClearBackground(color.color);
+    }
+}
+
+} // namespace game::systems

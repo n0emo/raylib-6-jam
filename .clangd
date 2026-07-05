@@ -1,0 +1,18 @@
+If:
+  PathMatch: [.*\.hpp, .*\.cpp]
+
+CompileFlags:
+  Add:
+    - -std=c++23
+    - -Wall -Wextra
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - "modernize*"
+      - "bugprone*"
+      - "cppcoreguidelines*"
+    Remove:
+      - "cppcoreguidelines-avoid-magic-numbers"
+      - "cppcoreguidelines-pro-type-vararg"
+      - "modernize-use-std-print"
