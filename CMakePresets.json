@@ -40,6 +40,14 @@
       "inherits": ["gcc", "release"]
     },
     {
+      "name": "clang-cl-dev",
+      "inherits": ["clang-cl", "dev"]
+    },
+    {
+      "name": "clang-cl-release",
+      "inherits": ["clang-cl", "release"]
+    },
+    {
       "name": "x86_64-w64-mingw32-release",
       "inherits": ["x86_64-w64-mingw32", "release"]
     },
@@ -55,7 +63,8 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang",
-        "CMAKE_CXX_COMPILER": "clang++"
+        "CMAKE_CXX_COMPILER": "clang++",
+	"CMAKE_LINKER": "clang"
       }
     },
     {
@@ -65,6 +74,21 @@
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "clang-cl",
+      "hidden": true,
+      "inherits": ["base"],
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl",
+	"CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /W3 -m64",
+	"CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /W3 -m64",
+	"CMAKE_EXE_LINKER_FLAGS": "/machine:X64",
+	"CMAKE_MODULE_LINKER_FLAGS": "/machine:X64",
+	"CMAKE_SHARED_LINKER_FLAGS": "/machine:X64",
+	"CMAKE_STATIC_LINKER_FLAGS": "/machine:X64"
       }
     },
     {

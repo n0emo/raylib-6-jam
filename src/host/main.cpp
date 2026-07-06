@@ -1,5 +1,7 @@
 #if GAME_HOT_RELOAD
 
+#define CR_DEBUG
+#define CR_LOG(...)
 #define CR_HOST
 #include <cr.h>
 
@@ -11,6 +13,7 @@ auto main(int argc, char *argv[]) -> int {
 
     while (true) {
         if (cr_plugin_update(ctx) == 1) break;
+	if (ctx.failure == CR_INITIAL_FAILURE) break;
     }
 
     cr_plugin_close(ctx);

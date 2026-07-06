@@ -1,5 +1,5 @@
 if(GAME_HOT_RELOAD)
-    add_library(${PROJECT_NAME}-game SHARED)
+    add_library(${PROJECT_NAME}-game MODULE)
 else()
     add_library(${PROJECT_NAME}-game STATIC)
 endif()
@@ -24,6 +24,8 @@ target_include_directories(${PROJECT_NAME}-game PUBLIC .)
 
 set_target_properties(${PROJECT_NAME}-game PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
 target_compile_definitions(${PROJECT_NAME}-game PRIVATE
