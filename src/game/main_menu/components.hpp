@@ -1,7 +1,7 @@
 #pragma once
 
-namespace game::components {
+namespace cfu::components {
 
 struct MainMenuTag {};
 
-} // namespace game::components
+} // namespace cfu::components

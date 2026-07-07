@@ -1,6 +1,7 @@
 #include "./systems.hpp"
 
 #include <imgui_entt_entity_editor.hpp>
+#include <ranges>
 #include <imgui.h>
 #include <raylib.h>
 
@@ -8,10 +9,11 @@
 #include "../physics/components.hpp"
 #include "../player/components.hpp"
 #include "../shapes/components.hpp"
+#include "../solids/components.hpp"
 #include "../states.hpp"
 #include "./components.hpp"
 
-namespace game::systems {
+namespace cfu::systems {
 
 auto setup_dev(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(components::DevSettings {});
@@ -75,6 +77,16 @@ auto draw_dev_panel(entt::registry& registry) -> void {
 
             if (ImGui::MenuItem("Pop")) stack.pop();
 
+            ImGui::Separator();
+
+            ImGui::Text("State Stack");
+            auto list = StateStack::get(registry).list();
+            for (auto state : std::views::reverse(list)) {
+                if (std::holds_alternative<MainMenuState>(state)) ImGui::Text("- Main Menu");
+                else if (std::holds_alternative<InGameState>(state)) ImGui::Text("- In Game");
+                else ImGui::Text("- Unknown");
+            }
+
             ImGui::EndMenu();
         }
 
@@ -92,12 +104,13 @@ auto draw_dev_panel(entt::registry& registry) -> void {
 auto setup_entt_editor(entt::registry& registry) -> void {
     auto editor = components::Editor {};
     editor.show_window = false;
-    editor.registerComponent<components::BackgroundColor>("BackgroundColor");
-    editor.registerComponent<components::Position>("Position");
-    editor.registerComponent<components::Velocity>("Velocity");
-    editor.registerComponent<components::ShapeColor>("Shape Color");
-    editor.registerComponent<components::Ball>("Ball");
-    editor.registerComponent<components::Player>("Player");
+    editor.registerComponent<components::BackgroundColor>("background::Color");
+    editor.registerComponent<components::Ball>("shapes::Ball");
+    editor.registerComponent<components::Cube>("solids::Cube");
+    editor.registerComponent<components::Player>("player::Player");
+    editor.registerComponent<components::Transform>("physics::Transform");
+    editor.registerComponent<components::ShapeColor>("shapes::Color");
+    editor.registerComponent<components::SolidMaterial>("solids::Material");
     registry.ctx().insert_or_assign(editor);
 
     auto entity = components::CurrentEntity {.entity = entt::null};
@@ -110,4 +123,4 @@ auto draw_entt_editor(entt::registry& registry) -> void {
     editor.renderSimpleCombo(registry, entity);
 }
 
-} // namespace game::systems
+} // namespace cfu::systems

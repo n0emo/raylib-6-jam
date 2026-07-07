@@ -1,6 +1,6 @@
 #include "states.hpp"
 
-namespace game {
+namespace cfu {
 
 auto StateStack::setup(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(StateStack());
@@ -19,42 +19,46 @@ auto StateStack::pop() -> void {
 }
 
 auto StateStack::replace(State state) -> void {
-    m_pending = PendingPush {.state = std::move(state)};
+    m_pending = PendingReplace {.state = std::move(state)};
 }
 
 auto StateStack::update(entt::registry& registry) -> void {
     if (auto pending = std::get_if<PendingPush>(&m_pending)) {
         std::visit([&](auto& s) -> void { s.on_enter(registry); }, pending->state);
-        m_stack.push(std::move(pending->state));
+        m_stack.push_back(std::move(pending->state));
         m_pending = NoPendingTransition {};
     } else if (!m_stack.empty() && std::holds_alternative<PendingPop>(m_pending)) {
-        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.top());
-        m_stack.pop();
+        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.back());
+        m_stack.pop_back();
         m_pending = NoPendingTransition {};
     } else if (auto pending = std::get_if<PendingReplace>(&m_pending)) {
-        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.top());
-        m_stack.pop();
+        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.back());
+        m_stack.pop_back();
         std::visit([&](auto& s) -> void { s.on_enter(registry); }, pending->state);
-        m_stack.push(std::move(pending->state));
+        m_stack.push_back(std::move(pending->state));
         m_pending = NoPendingTransition {};
     }
 
     if (!m_stack.empty()) {
-        std::visit([&](auto& s) -> void { s.update(registry); }, m_stack.top());
+        std::visit([&](auto& s) -> void { s.update(registry); }, m_stack.back());
     }
 }
 
 auto StateStack::draw(entt::registry& registry) -> void {
     if (!m_stack.empty()) {
-        std::visit([&](auto& s) -> void { s.draw(registry); }, m_stack.top());
+        std::visit([&](auto& s) -> void { s.draw(registry); }, m_stack.back());
     }
 }
 
 auto StateStack::clear(entt::registry& registry) -> void {
     while (!m_stack.empty()) {
-        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.top());
-        m_stack.pop();
+        std::visit([&](auto& s) -> void { s.on_exit(registry); }, m_stack.back());
+        m_stack.pop_back();
     }
 }
 
-} // namespace game
+auto StateStack::list() -> std::span<const State> {
+    return m_stack;
+}
+
+} // namespace cfu

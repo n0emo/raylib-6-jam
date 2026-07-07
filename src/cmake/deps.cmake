@@ -11,9 +11,7 @@ function(set_dependencies target)
     )
 
     if(GAME_HOT_RELOAD)
-        target_link_libraries(${target} PRIVATE cr box2dd)
-    else()
-        target_link_libraries(${target} PRIVATE cr box2d)
+        target_link_libraries(${target} PRIVATE cr)
     endif()
 
     if(WIN32)

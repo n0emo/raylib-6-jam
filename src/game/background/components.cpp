@@ -5,8 +5,8 @@
 namespace MM {
 
 template<>
-void ComponentEditorWidget<game::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& c = reg.get<game::components::BackgroundColor>(e);
+void ComponentEditorWidget<cfu::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& c = reg.get<cfu::components::BackgroundColor>(e);
     auto colors = std::array<float, 4> {
         float(c.color.r) / 255.0f,
         float(c.color.g) / 255.0f,

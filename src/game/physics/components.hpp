@@ -5,28 +5,23 @@
 #include <imgui_entt_entity_editor.hpp>
 #include <raylib.h>
 
-namespace game::components {
+namespace cfu::components {
 
 struct World {
     b2WorldId id;
 };
 
-struct Position {
-    Vector2 vec;
+struct Transform {
+    Vector3 translation;
+    Vector3 rotation;
+    Vector3 scale;
 };
 
-struct Velocity {
-    Vector2 vec;
-};
-
-} // namespace game::components
+} // namespace cfu::components
 
 namespace MM {
 
 template<>
-void ComponentEditorWidget<game::components::Position>(entt::registry& reg, entt::registry::entity_type e);
-
-template<>
-void ComponentEditorWidget<game::components::Velocity>(entt::registry& reg, entt::registry::entity_type e);
+void ComponentEditorWidget<cfu::components::Transform>(entt::registry& reg, entt::registry::entity_type e);
 
 } // namespace MM

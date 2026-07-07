@@ -2,6 +2,7 @@
 
 // From <raylib.h> - manual forward declarations needed because cr.h includes windows.h
 extern "C" {
+// NOLINTNEXTLINE
 typedef enum { LOG_ALL = 0, LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_FATAL, LOG_NONE } TraceLogLevel;
 
 void TraceLog(int logLevel, const char *text, ...);
@@ -9,12 +10,12 @@ void TraceLog(int logLevel, const char *text, ...);
 
 #define CR_DEBUG
 #define CR_HOST
-#define CR_ERROR(...) TraceLog(LOG_ERROR, "[CR] " __VA_ARGS__)
-#define CR_LOG(...) TraceLog(LOG_INFO, "[CR] " __VA_ARGS__)
+#define CR_ERROR(...) TraceLog(LOG_ERROR, "[CR] " __VA_ARGS__) // NOLINT
+#define CR_LOG(...) TraceLog(LOG_INFO, "[CR] " __VA_ARGS__) // NOLINT
 #define CR_TRACE TraceLog(LOG_DEBUG, "[CR] Trace: %s", __FUNCTION__);
 #include <cr.h>
 
-constexpr auto DLL_PATH = "build/" CR_PLUGIN("plugin");
+constexpr auto DLL_PATH = "build/dev/" CR_PLUGIN("plugin");
 
 auto main(int argc, char *argv[]) -> int {
     cr_plugin ctx {};
@@ -36,12 +37,14 @@ auto main(int argc, char *argv[]) -> int {
 #include <game.hpp>
 
 auto main(int argc, char *argv[]) -> int {
-    auto game = game::Game {};
-    game::Game::init(game);
+    auto game = cfu::Game {};
+    cfu::Game::init(game);
 
     while (game.running()) {
         game.frame();
     }
+
+    cfu::Game::deinit(game);
 
     return 0;
 }

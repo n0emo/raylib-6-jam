@@ -2,9 +2,9 @@
 
 #include <entt/entt.hpp>
 
-namespace game::systems {
+namespace cfu::systems {
 
 auto setup_physics(entt::registry& registry) -> void;
 auto update_physics(entt::registry& registry) -> void;
 
-} // namespace game::systems
+} // namespace cfu::systems

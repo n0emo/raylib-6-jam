@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-namespace game {
+namespace cfu {
 
 struct Game {
     entt::registry registry;
@@ -14,4 +14,4 @@ struct Game {
     auto running(this const Game& self) -> bool;
 };
 
-} // namespace game
+} // namespace cfu

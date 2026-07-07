@@ -4,17 +4,17 @@
 #include <entt/entt.hpp>
 #include <imgui_entt_entity_editor.hpp>
 
-namespace game::components {
+namespace cfu::components {
 
 struct BackgroundColor {
     Color color;
 };
 
-} // namespace game::components
+} // namespace cfu::components
 
 namespace MM {
 
 template<>
-void ComponentEditorWidget<game::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e);
+void ComponentEditorWidget<cfu::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e);
 
 } // namespace MM

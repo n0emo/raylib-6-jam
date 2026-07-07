@@ -10,7 +10,7 @@
 #include "./physics/systems.hpp"
 #include "./states.hpp"
 
-namespace game {
+namespace cfu {
 
 auto Game::init(Game& self) -> void {
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
@@ -56,4 +56,4 @@ auto Game::running(this const Game&) -> bool {
     return !WindowShouldClose();
 }
 
-} // namespace game
+} // namespace cfu

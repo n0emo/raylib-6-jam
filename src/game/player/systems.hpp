@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-namespace game::systems {
+namespace cfu::systems {
 
 auto update_player(entt::registry& registry) -> void;
 

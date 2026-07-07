@@ -1,18 +1,22 @@
 #include "./components.hpp"
 
-#include "../shapes/components.hpp"
 #include "../physics/components.hpp"
+#include "../solids/components.hpp"
 
-namespace game::components {
+namespace cfu::components {
 
-auto create_player(entt::registry& registry) -> entt::entity {
-    auto e = registry.create();
-    registry.emplace<Player>(e);
-    registry.emplace<Position>(e, 200.0f, 200.0f);
-    registry.emplace<Velocity>(e);
-    registry.emplace<Ball>(e, 10.0f);
-    registry.emplace<ShapeColor>(e, RED);
-    return e;
+auto create_player(entt::registry& registry, entt::entity entity) -> void {
+    registry.emplace<Player>(entity);
+    registry.emplace<cfu::components::Transform>(
+        entity,
+        cfu::components::Transform {
+            .translation = Vector3(0.0f, 10.0f, 0.0f),
+            .rotation = Vector3(),
+            .scale = Vector3(1.0f, 1.0f, 1.0f),
+        }
+    );
+    registry.emplace<Cube>(entity, 20.0f, 20.0f, 20.0f);
+    registry.emplace<SolidMaterial>(entity, RED);
 }
 
-} // namespace game::components
+} // namespace cfu::components

@@ -9,6 +9,7 @@ endif()
 target_sources(${PROJECT_NAME}-game PRIVATE
     ./background/components.cpp
     ./background/systems.cpp
+    ./camera/systems.cpp
     ./dev/systems.cpp
     ./game.cpp
     ./in_game/state.cpp
@@ -19,6 +20,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./player/systems.cpp
     ./shapes/components.cpp
     ./shapes/systems.cpp
+    ./solids/components.cpp
+    ./solids/systems.cpp
     ./states.cpp
 )
 

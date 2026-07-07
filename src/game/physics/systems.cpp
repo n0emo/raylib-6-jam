@@ -3,7 +3,7 @@
 #include "../constants.hpp"
 #include "./components.hpp"
 
-namespace game::systems {
+namespace cfu::systems {
 
 auto setup_physics(entt::registry& registry) -> void {
     auto def = b2DefaultWorldDef();
@@ -17,4 +17,4 @@ auto update_physics(entt::registry& registry) -> void {
     b2World_Step(world.id, GetFrameTime(), B2_STEPS);
 }
 
-} // namespace game::systems
+} // namespace cfu::systems

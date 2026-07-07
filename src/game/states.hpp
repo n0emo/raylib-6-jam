@@ -1,5 +1,6 @@
-#include <stack>
+#include <vector>
 #include <variant>
+#include <span>
 
 #include <entt/entt.hpp>
 #include <gsl/gsl>
@@ -7,7 +8,7 @@
 #include "main_menu/state.hpp"
 #include "in_game/state.hpp"
 
-namespace game {
+namespace cfu {
 
 using State = std::variant<MainMenuState, InGameState>;
 
@@ -22,6 +23,7 @@ class StateStack {
     auto update(entt::registry& registry) -> void;
     auto draw(entt::registry& registry) -> void;
     auto clear(entt::registry& registry) -> void;
+    auto list() -> std::span<const State>;
 
   private:
     struct NoPendingTransition {};
@@ -36,7 +38,7 @@ class StateStack {
         State state;
     };
 
-    std::stack<State> m_stack;
+    std::vector<State> m_stack;
     std::variant<NoPendingTransition, PendingPush, PendingPop, PendingReplace> m_pending = NoPendingTransition {};
 };
-} // namespace game
+} // namespace cfu

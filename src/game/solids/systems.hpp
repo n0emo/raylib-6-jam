@@ -4,6 +4,6 @@
 
 namespace cfu::systems {
 
-auto draw_background_color(entt::registry& registry) -> void;
+auto draw_solids(entt::registry& registry) -> void;
 
 }

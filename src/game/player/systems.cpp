@@ -1,21 +1,35 @@
 #include "./systems.hpp"
 
+#include "../raymath.hpp"
 #include "../physics/components.hpp"
+#include "../constants.hpp"
 #include "./components.hpp"
 
-namespace game::systems {
+namespace cfu::systems {
 
 auto update_player(entt::registry& registry) -> void {
     constexpr auto player_speed = 100.0f;
     const auto dt = GetFrameTime();
 
-    auto view = registry.view<components::Position, components::Player>();
-    for (auto [entity, position] : view.each()) {
-        if (IsKeyDown(KEY_A)) position.vec.x -= player_speed * dt;
-        if (IsKeyDown(KEY_D)) position.vec.x += player_speed * dt;
-        if (IsKeyDown(KEY_W)) position.vec.y -= player_speed * dt;
-        if (IsKeyDown(KEY_S)) position.vec.y += player_speed * dt;
+    auto view = registry.view<cfu::components::Transform, components::Player>();
+    for (auto [entity, transform] : view.each()) {
+        auto input2d = Vector2();
+        if (IsKeyDown(KEY_A)) input2d.x -= 1.0f;
+        if (IsKeyDown(KEY_D)) input2d.x += 1.0f;
+        if (IsKeyDown(KEY_W)) input2d.y -= 1.0f;
+        if (IsKeyDown(KEY_S)) input2d.y += 1.0f;
+
+        if (Vector2LengthSqr(input2d) == 0) continue;
+
+        const auto offset_normalized = Vector2Normalize(Vector2(CAMERA_OFFSET.x, CAMERA_OFFSET.y));
+        const auto angle = Vector2Angle(Vector2(0.0f, 1.0f), offset_normalized);
+        input2d = Vector2Normalize(Vector2Rotate(input2d, angle));
+        transform.rotation.y = Vector2Angle(Vector2(0.0f, 1.0f), input2d);
+        auto input3d = Vector3(input2d.x, 0.0f, input2d.y);
+        // Vector3Angle(input3d, CAMERA_OFFSET);
+
+        transform.translation += input3d * player_speed * dt;
     }
 }
 
-} // namespace game::systems
+} // namespace cfu::systems

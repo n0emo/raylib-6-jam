@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-namespace game {
+namespace cfu {
 
 class InGameState {
   public:
@@ -12,4 +12,4 @@ class InGameState {
     auto draw(entt::registry& registry) -> void;
 };
 
-} // namespace game
+} // namespace cfu

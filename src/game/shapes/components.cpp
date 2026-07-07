@@ -3,8 +3,8 @@
 namespace MM {
 
 template<>
-void ComponentEditorWidget<game::components::ShapeColor>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& c = reg.get<game::components::ShapeColor>(e);
+void ComponentEditorWidget<cfu::components::ShapeColor>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& c = reg.get<cfu::components::ShapeColor>(e);
     auto colors = std::array<float, 4> {
         float(c.color.r) / 255.0f,
         float(c.color.g) / 255.0f,
@@ -19,8 +19,8 @@ void ComponentEditorWidget<game::components::ShapeColor>(entt::registry& reg, en
 }
 
 template<>
-void ComponentEditorWidget<game::components::Ball>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& ball = reg.get<game::components::Ball>(e);
+void ComponentEditorWidget<cfu::components::Ball>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& ball = reg.get<cfu::components::Ball>(e);
     ImGui::DragFloat("Radius", &ball.radius);
 }
 

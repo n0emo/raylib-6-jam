@@ -4,7 +4,6 @@
     {
       "name": "base",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_BUILD_TYPE": "Release"
@@ -13,6 +12,7 @@
     {
       "name": "dev",
       "inherits": ["base"],
+      "binaryDir": "${sourceDir}/build/dev",
       "cacheVariables": {
         "GAME_HOT_RELOAD": "ON",
         "CMAKE_BUILD_TYPE": "Debug"
@@ -21,6 +21,7 @@
     {
       "name": "release",
       "inherits": ["base"],
+      "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
         "GAME_HOT_RELOAD": "OFF"
       }
@@ -56,6 +57,7 @@
     {
       "name": "web-release",
       "inherits": ["release"],
+      "binaryDir": "${sourceDir}/build/web",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
         "CMAKE_BUILD_TYPE": "MinSizeRel"
