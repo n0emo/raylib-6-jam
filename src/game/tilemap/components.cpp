@@ -5,7 +5,6 @@
 #include "../vox/resource.hpp"
 #include "../vox/components.hpp"
 #include "../physics/components.hpp"
-#include "../solids/components.hpp"
 #include "../constants.hpp"
 #include "../raymath.hpp"
 

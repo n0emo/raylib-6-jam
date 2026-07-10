@@ -3,7 +3,6 @@
 #include <entt/entt.hpp>
 
 #include "../physics/components.hpp"
-#include "../solids/components.hpp"
 #include "../combat/components.hpp"
 #include "../tilemap/components.hpp"
 #include "../vox/resource.hpp"
@@ -28,6 +27,9 @@ auto create_player(entt::registry& registry, entt::entity entity) -> void {
             .scale = Vector3(4.0f, 4.0f, 4.0f),
         }
     );
+    registry.emplace<comp::Position>(entity, 0.0f, 0.0f);
+    registry.emplace<comp::Velocity>(entity, 0.0f, 0.0f);
+    registry.emplace<comp::CircleCollider>(entity, 8.0f);
 
     registry.emplace<Grounded>(entity, 0.0f);
 

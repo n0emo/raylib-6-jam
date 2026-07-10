@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <raylib.h>
+#include <rlgl.h>
 
 #include <rlImGui.h>
 
@@ -10,6 +11,7 @@
 #include "./dev/systems.hpp"
 #include "./physics/systems.hpp"
 #include "./render_texture/systems.hpp"
+#include "./shaders/systems.hpp"
 #include "./states.hpp"
 #include "./vox/systems.hpp"
 
@@ -20,9 +22,12 @@ auto Game::init(Game& self) -> void {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Cmake");
     SetTargetFPS(60);
     InitAudioDevice();
+    rlSetClipPlanes(20.0f, 5000.0f);
     rlImGuiSetup(true);
 
     systems::load_game_data_from_disk(self.registry);
+    systems::reload_shaders(self.registry);
+
     systems::setup_vox_model_cache(self.registry);
     systems::reload_voxel_models(self.registry);
 
@@ -57,6 +62,7 @@ auto Game::frame(this Game& self) -> void {
     systems::begin_main_render_texture(self.registry);
     StateStack::get(self.registry).draw(self.registry);
     systems::end_main_render_texture(self.registry);
+
     rlImGuiBegin();
     systems::draw_dev(self.registry);
     rlImGuiEnd();

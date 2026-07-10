@@ -14,6 +14,8 @@
 #include "../physics/components.hpp"
 #include "../player/components.hpp"
 #include "../raymath.hpp"
+#include "../shaders/components.hpp"
+#include "../shaders/systems.hpp"
 #include "../shapes/components.hpp"
 #include "../solids/components.hpp"
 #include "../states.hpp"
@@ -41,7 +43,10 @@ auto draw_dev(entt::registry& registry) -> void {
         SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         return;
     }
-    if (IsKeyPressed(KEY_F1)) systems::reload_voxel_models(registry);
+    if (IsKeyPressed(KEY_F1)) {
+        systems::reload_shaders(registry);
+        systems::reload_voxel_models(registry);
+    }
 
     draw_dev_panel(registry);
     draw_entt_editor(registry);
@@ -132,14 +137,19 @@ auto setup_entt_editor(entt::registry& registry) -> void {
     editor.show_window = false;
     editor.registerComponent<comp::BackgroundColor>("background::Color");
     editor.registerComponent<comp::Ball>("shapes::Ball");
+    editor.registerComponent<comp::CircleCollider>("physics::CircleCollider");
     editor.registerComponent<comp::Cube>("solids::Cube");
+    editor.registerComponent<comp::Hp>("combat::Hp");
+    editor.registerComponent<comp::Light>("shaders::Light");
+    editor.registerComponent<comp::MeleeAttack>("combat::MeleeAttack");
+    editor.registerComponent<comp::MoveSpeed>("combat::MoveSpeed");
     editor.registerComponent<comp::Player>("player::Player");
-    editor.registerComponent<comp::Transform>("physics::Transform");
+    editor.registerComponent<comp::Position>("physics::Position");
+    editor.registerComponent<comp::ShadowLightTag>("shaders::ShadowLightTag");
     editor.registerComponent<comp::ShapeColor>("shapes::Color");
     editor.registerComponent<comp::SolidMaterial>("solids::Material");
-    editor.registerComponent<comp::Hp>("combat::Hp");
-    editor.registerComponent<comp::MoveSpeed>("combat::MoveSpeed");
-    editor.registerComponent<comp::MeleeAttack>("combat::MeleeAttack");
+    editor.registerComponent<comp::Transform>("physics::Transform");
+    editor.registerComponent<comp::Velocity>("physics::Velocity");
     registry.ctx().insert_or_assign(editor);
 
     auto entity = comp::CurrentEntity {.entity = entt::null};
@@ -272,6 +282,26 @@ auto setup_data_editor(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(comp::DataEditor {});
 }
 
+template<typename F>
+static auto editor_section(gsl::czstring name, F f) {
+    if (ImGui::CollapsingHeader(name)) {
+        ImGui::PushID(name);
+        ImGui::Indent(10.0f);
+        f();
+        ImGui::Unindent(10.0f);
+        ImGui::PopID();
+    }
+}
+
+template<typename T>
+static auto base_stats_editor(T& stats) {
+    ImGui::DragInt("Max HP", &stats.max_hp);
+    ImGui::DragInt("Move Speed", &stats.move_speed);
+    ImGui::DragInt("Damage", &stats.damage);
+    ImGui::DragInt("Attack Speed", &stats.attack_speed);
+    ImGui::DragInt("Attack Radius", &stats.attack_radius);
+}
+
 auto draw_data_editor(entt::registry& registry) -> void {
     auto& d = registry.ctx().get<comp::GameData>();
     auto& editor = registry.ctx().get<comp::DataEditor>();
@@ -289,10 +319,7 @@ auto draw_data_editor(entt::registry& registry) -> void {
 
     ImGui::Separator();
 
-    if (ImGui::CollapsingHeader("Camera settings")) {
-        ImGui::PushID("Camera settings");
-        ImGui::Indent(10.f);
-
+    editor_section("Camera settings", [&]() -> void {
         auto& c = d.balance.camera;
         ImGui::DragFloat("Box culling", &c.box_culling, 100.0f);
         ImGui::DragFloat("Lerp factor", &c.lerp, 0.002f);
@@ -307,65 +334,19 @@ auto draw_data_editor(entt::registry& registry) -> void {
         ImGui::DragFloat("X##up", &c.up.x, 1.0f);
         ImGui::DragFloat("Y##up", &c.up.y, 1.0f);
         ImGui::DragFloat("Z##up", &c.up.z, 1.0f);
+    });
 
-        ImGui::Unindent();
-        ImGui::PopID();
-    }
+    editor_section("Player stats", [&]() -> void {
+        editor_section("Evo 1", [&]() -> void { base_stats_editor(d.balance.player.evo_1); });
+        editor_section("Evo 2", [&]() -> void { base_stats_editor(d.balance.player.evo_2); });
+        editor_section("Evo 3", [&]() -> void { base_stats_editor(d.balance.player.evo_3); });
+    });
 
-    if (ImGui::CollapsingHeader("Player stats")) {
-        ImGui::PushID("Player stats");
-        ImGui::Indent(10.0f);
-
-        auto& p = d.balance.player;
-
-        if (ImGui::CollapsingHeader("Evo 1")) {
-            ImGui::PushID("Evo 1");
-            ImGui::Indent(10.0f);
-
-            auto& e = p.evo_1;
-            ImGui::DragInt("Max HP", &e.max_hp);
-            ImGui::DragInt("Move Speed", &e.move_speed);
-            ImGui::DragInt("Damage", &e.damage);
-            ImGui::DragInt("Attack Speed", &e.attack_speed);
-            ImGui::DragInt("Attack Radius", &e.attack_radius);
-
-            ImGui::Unindent(10.0f);
-            ImGui::PopID();
-        }
-
-        if (ImGui::CollapsingHeader("Evo 2")) {
-            ImGui::PushID("Evo 2");
-            ImGui::Indent(10.0f);
-
-            auto& e = p.evo_2;
-            ImGui::DragInt("Max HP", &e.max_hp);
-            ImGui::DragInt("Move Speed", &e.move_speed);
-            ImGui::DragInt("Damage", &e.damage);
-            ImGui::DragInt("Attack Speed", &e.attack_speed);
-            ImGui::DragInt("Attack Radius", &e.attack_radius);
-
-            ImGui::Unindent(10.0f);
-            ImGui::PopID();
-        }
-
-        if (ImGui::CollapsingHeader("Evo 3")) {
-            ImGui::PushID("Evo 3");
-            ImGui::Indent(10.0f);
-
-            auto& e = p.evo_3;
-            ImGui::DragInt("Max HP", &e.max_hp);
-            ImGui::DragInt("Move Speed", &e.move_speed);
-            ImGui::DragInt("Damage", &e.damage);
-            ImGui::DragInt("Attack Speed", &e.attack_speed);
-            ImGui::DragInt("Attack Radius", &e.attack_radius);
-
-            ImGui::Unindent(10.0f);
-            ImGui::PopID();
-        }
-
-        ImGui::Unindent(10.0f);
-        ImGui::PopID();
-    }
+    editor_section("Enemy stats", [&]() -> void {
+        editor_section("Melee 1", [&]() -> void { base_stats_editor(d.balance.enemies.melee_1); });
+        editor_section("Melee 2", [&]() -> void { base_stats_editor(d.balance.enemies.melee_2); });
+        editor_section("Melee 3", [&]() -> void { base_stats_editor(d.balance.enemies.melee_3); });
+    });
 
     if (ImGui::BeginPopupModal("Confirm Reset?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::Text("Are you sure you want to reset game data?");

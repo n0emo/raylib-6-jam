@@ -1,5 +1,6 @@
-#include "./resource.hpp"
+#include "./systems.hpp"
 
+#include <raylib.h>
 #include <rlgl.h>
 
 #include <numbers>
@@ -8,12 +9,14 @@
 #include "../data/components.hpp"
 #include "../physics/components.hpp"
 #include "../raymath.hpp"
+#include "./resource.hpp"
 #include "./components.hpp"
 
 namespace cfu::systems {
 
 auto setup_vox_model_cache(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(res::VoxelModelCache {});
+    reload_voxel_models(registry);
 }
 
 static auto reload_single_model(res::VoxelModelCache& cache, res::vox::VoxelModelId id, gsl::czstring path) {
@@ -28,7 +31,7 @@ auto reload_voxel_models(entt::registry& registry) -> void {
     #undef CFU_X
 }
 
-auto draw_voxel_models(entt::registry& registry) -> void {
+auto draw_voxel_models(entt::registry& registry, Shader shader) -> void {
     auto d = registry.ctx().get<comp::GameData>();
     auto camera_entity = registry.view<Camera3D, comp::CameraOffset>().back();
     if (camera_entity == entt::null) return;
@@ -49,6 +52,9 @@ auto draw_voxel_models(entt::registry& registry) -> void {
         auto angle = float {};
         QuaternionToAxisAngle(quaternion, &axis, &angle);
         angle *= 180.0f / std::numbers::pi_v<float>;
+        for (auto i = 0; i < model.handle->model.materialCount; i++) {
+            model.handle->model.materials[i].shader = shader;
+        }
         DrawModelEx(model.handle->model, transform.translation, axis, angle, transform.scale, WHITE);
     }
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <entt/resource/resource.hpp>
 #include <entt/entity/registry.hpp>
 #include <entt/resource/cache.hpp>
@@ -33,7 +31,6 @@ namespace vox {
 struct VoxelModel {
     Model model {};
     BoundingBox bounding_box {};
-    std::string path {};
 
     VoxelModel(std::string_view path);
     VoxelModel(VoxelModel&& other) noexcept;

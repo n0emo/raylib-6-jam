@@ -72,6 +72,38 @@ void from_json(const json& j, PlayerData& d) {
     d.evo_3 = j.value("evo_3", PlayerEvo3Data {});
 }
 
+void to_json(json& j, const MeleeEnemyData& d) {
+    j = json {
+        {"max_hp", d.max_hp},
+        {"move_speed", d.move_speed},
+        {"damage", d.damage},
+        {"attack_speed", d.attack_speed},
+        {"attack_radius", d.attack_radius},
+    };
+}
+
+void from_json(const json& j, MeleeEnemyData& d) {
+    d.max_hp = j.value("max_hp", 0);
+    d.move_speed = j.value("move_speed", 0);
+    d.damage = j.value("damage", 0);
+    d.attack_speed = j.value("attack_speed", 0);
+    d.attack_radius = j.value("attack_radius", 0);
+}
+
+void to_json(json& j, const EnemiesData& d) {
+    j = json {
+        {"melee_1", d.melee_1},
+        {"melee_2", d.melee_2},
+        {"melee_3", d.melee_3},
+    };
+}
+
+void from_json(const json& j, EnemiesData& d) {
+    d.melee_1 = j.value("melee_1", MeleeEnemyData {});
+    d.melee_2 = j.value("melee_2", MeleeEnemyData {});
+    d.melee_3 = j.value("melee_3", MeleeEnemyData {});
+}
+
 void to_json(json& j, const CameraData& d) {
     j = json {
         {"box_culling", d.box_culling},

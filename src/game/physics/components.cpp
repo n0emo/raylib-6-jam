@@ -30,4 +30,24 @@ void ComponentEditorWidget<Transform>(entt::registry& reg, entt::registry::entit
     ImGui::DragFloat("Z##Scale", &transform.scale.z, 0.01f);
 }
 
+template<>
+void ComponentEditorWidget<Position>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& position = reg.get<Position>(e);
+    ImGui::DragFloat("X", &position.x);
+    ImGui::DragFloat("Y", &position.y);
+}
+
+template<>
+void ComponentEditorWidget<Velocity>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& velocity = reg.get<Velocity>(e);
+    ImGui::DragFloat("X", &velocity.x);
+    ImGui::DragFloat("Y", &velocity.y);
+}
+
+template<>
+void ComponentEditorWidget<CircleCollider>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& collider = reg.get<CircleCollider>(e);
+    ImGui::DragFloat("Radius", &collider.radius, 1.0f, 0.0f, 999.0f, "%.0f");
+}
+
 } // namespace cfu::comp

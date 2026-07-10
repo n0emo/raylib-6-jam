@@ -166,7 +166,7 @@ class EntityEditor {
                 component_infos.begin(),
                 component_infos.end()
             };
-            std::sort(infos.begin(), infos.end(), [](auto a, auto b) { return a.second.name < b.second.name; });
+            std::sort(infos.begin(), infos.end(), [](auto a, auto b) -> bool { return a.second.name < b.second.name; });
 
             for (auto& [component_type_id, ci] : infos) {
                 if (entityHasComponent(registry, e, component_type_id)) {
@@ -225,7 +225,7 @@ class EntityEditor {
         ImGui::Indent();
 
         std::vector<std::pair<ComponentTypeID, ComponentInfo>> infos {component_infos.begin(), component_infos.end()};
-        std::sort(infos.begin(), infos.end(), [](auto a, auto b) { return a.second.name < b.second.name; });
+        std::sort(infos.begin(), infos.end(), [](auto a, auto b) -> auto { return a.second.name < b.second.name; });
         for (const auto& [component_type_id, ci] : infos) {
             bool is_in_list = comp_list.count(component_type_id);
             bool active = is_in_list;

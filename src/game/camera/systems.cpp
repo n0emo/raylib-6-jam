@@ -20,7 +20,7 @@ auto create_camera(entt::registry& registry, entt::entity entity) -> void {
             .target = Vector3 {},
             .up = d.balance.camera.up,
             .fovy = d.balance.camera.fovy,
-            .projection = CAMERA_ORTHOGRAPHIC,
+            .projection = CAMERA_PERSPECTIVE,
         }
     );
     registry.emplace<comp::CameraLerp>(entity, d.balance.camera.lerp);

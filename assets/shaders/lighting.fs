@@ -1,6 +1,5 @@
+// vim: ft=glsl :
 #version 100
-
-// From Raylib example "shaders_basic_lighting"
 
 precision mediump float;
 
@@ -16,9 +15,9 @@ uniform vec4 colDiffuse;
 
 // NOTE: Add your custom variables here
 
-#define     MAX_LIGHTS              4
-#define     LIGHT_DIRECTIONAL       0
-#define     LIGHT_POINT             1
+#define MAX_LIGHTS 4
+#define LIGHT_DIRECTIONAL 0
+#define LIGHT_POINT 1
 
 struct Light {
     int enabled;

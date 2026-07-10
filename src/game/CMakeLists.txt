@@ -15,6 +15,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./data/systems.cpp
     ./dev/systems.cpp
     ./dev/utils.cpp
+    ./enemy/components.cpp
+    ./enemy/systems.cpp
     ./game.cpp
     ./in_game/state.cpp
     ./main_menu/state.cpp
@@ -23,6 +25,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./player/components.cpp
     ./player/systems.cpp
     ./render_texture/systems.cpp
+    ./shaders/components.cpp
+    ./shaders/systems.cpp
     ./shapes/components.cpp
     ./shapes/systems.cpp
     ./solids/components.cpp

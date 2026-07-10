@@ -1,6 +1,5 @@
+// vim: ft=glsl :
 #version 100
-
-// From Raylib example "shaders_basic_lighting"
 
 // Input vertex attributes
 attribute vec3 vertexPosition;

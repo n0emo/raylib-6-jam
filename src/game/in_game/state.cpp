@@ -5,16 +5,27 @@
 #include "../background/components.hpp"
 #include "../background/systems.hpp"
 #include "../camera/systems.hpp"
+#include "../physics/systems.hpp"
 #include "../player/components.hpp"
 #include "../player/systems.hpp"
+#include "../shaders/systems.hpp"
+#include "../shaders/components.hpp"
 #include "../shapes/systems.hpp"
 #include "../solids/systems.hpp"
 #include "../tilemap/components.hpp"
 #include "../tilemap/systems.hpp"
 #include "../vox/systems.hpp"
+#include "../raymath.hpp"
 #include "./components.hpp"
 
 namespace cfu {
+
+static auto create_light(entt::registry& registry, Vector3 position) -> entt::entity {
+    auto light = registry.create();
+    registry.emplace<comp::InGameTag>(light);
+    comp::create_light(registry, light, comp::LightType::Directional, position, Vector3Zero(), GRAY);
+    return light;
+}
 
 auto InGameState::on_enter(entt::registry& registry) -> void {
     TraceLog(LOG_INFO, "InGameState::on_enter");
@@ -42,6 +53,13 @@ auto InGameState::on_enter(entt::registry& registry) -> void {
             registry.emplace<comp::InGameTag>(tile);
         }
     }
+
+    auto sun = create_light(registry, Vector3(-70.0f, 70.0f, -70.0f));
+    registry.emplace<comp::ShadowLightTag>(sun);
+    create_light(registry, Vector3(-80.0f, 80.0f, -80.0f));
+    create_light(registry, Vector3(80.0f, 80.0f, 80.0f));
+    create_light(registry, Vector3(-80.0f, 80.0f, 80.0f));
+    comp::set_lights_shader_locations(registry, comp::get_lighting_shader(registry));
 }
 
 auto InGameState::on_exit(entt::registry& registry) -> void {
@@ -53,17 +71,30 @@ auto InGameState::on_exit(entt::registry& registry) -> void {
 auto InGameState::update(entt::registry& registry) -> void {
     systems::update_player(registry);
     systems::update_tilemap(registry);
+    systems::update_shaders(registry);
 }
 
 auto InGameState::draw(entt::registry& registry) -> void {
     systems::draw_background_color(registry);
     systems::update_camera(registry);
     systems::begin_camera_mode(registry);
+    systems::draw_physics(registry);
     systems::draw_solids(registry);
-    systems::draw_voxel_models(registry);
+    auto shader = comp::get_lighting_shader(registry);
+    systems::draw_voxel_models(registry, shader);
 
     systems::draw_shapes(registry);
+    systems::draw_shaders(registry);
+
     systems::end_camera_mode(registry);
+
+    // auto& shadow_map = registry.ctx().get<res::ShadowMap>();
+    // DrawTextureRec(
+    //     shadow_map.target.depth,
+    //     Rectangle {0, 0, (float)shadow_map.target.depth.width, -(float)shadow_map.target.depth.height},
+    //     Vector2 {0, 0},
+    //     WHITE
+    // );
 }
 
 } // namespace cfu

@@ -16,8 +16,6 @@ constexpr auto WINDOW_DEV_VIEWPORT_SECTION = Rectangle {
     .height = WINDOW_HEIGHT,
 };
 
-constexpr auto B2_STEPS = 4;
-
 constexpr auto TILE_SIZE = 16;
 
 constexpr auto BALANCE_DATA_PATH = "assets/data/balance.json";

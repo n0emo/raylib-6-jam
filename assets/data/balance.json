@@ -1,10 +1,10 @@
 {
   "camera": {
-    "box_culling": 40000.0,
-    "fovy": 200.0,
+    "box_culling": 120000.0,
+    "fovy": 51.0,
     "lerp": 15.0,
     "offset_x": 100.0,
-    "offset_y": 100.0,
+    "offset_y": 125.0,
     "offset_z": 100.0,
     "up_x": 0.0,
     "up_y": 1.0,

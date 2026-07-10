@@ -6,7 +6,6 @@ set(RAYLIB_VERSION 6.0)
 set(IMGUI_VERSION 1.92.8)
 set(RLIMGUI_VERSION Raylib_6_0)
 set(ENTT_VERSION 3.15.0)
-set(BOX2D_VERSION 3.1.1)
 set(JSON_VERSION 3.12.0)
 
 set(FETCHCONTENT_QUIET ON)
@@ -36,7 +35,7 @@ FetchContent_Declare(
 # Raylib
 set(BUILD_EXAMPLES OFF CACHE INTERNAL "")
 if(NOT WIN32)
-    set(OPENGL_VERSION "ES 2.0" CACHE INTERNAL "")
+    set(OPENGL_VERSION "ES 3.0" CACHE INTERNAL "")
 endif()
 FetchContent_Declare(
     raylib
@@ -62,12 +61,6 @@ FetchContent_Declare(
     URL "https://github.com/skypjack/entt/archive/refs/tags/v${ENTT_VERSION}.zip"
 )
 
-# Box2D
-FetchContent_Declare(
-    box2d
-    URL "https://github.com/erincatto/box2d/archive/refs/tags/v${BOX2D_VERSION}.zip"
-)
-
 # JSON
 FetchContent_Declare(
     json
@@ -80,7 +73,6 @@ fetch(raylib)
 fetch(imgui)
 fetch(rlimgui)
 fetch(entt)
-fetch(box2d)
 fetch(json)
 
 include(./imgui.cmake)
