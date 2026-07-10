@@ -241,7 +241,8 @@ auto draw_tilemap_editor(entt::registry& registry) -> void {
                     const auto y = gsl::index(position.y / TILE_SIZE);
                     const auto z = gsl::index(position.z / TILE_SIZE);
                     auto new_entity = registry.create();
-                    comp::create_tile(registry, new_entity, editor.current_tile, x, y, z);
+                    // TODO:: rotation
+                    comp::create_tile(registry, new_entity, editor.current_tile, comp::TileRotation::None, x, y, z);
                     registry.emplace<comp::InGameTag>(new_entity);
                 } else {
                     const auto ray = dev::mouse_ray(registry);
@@ -261,7 +262,7 @@ auto draw_tilemap_editor(entt::registry& registry) -> void {
                         const auto y = 0;
                         const auto z = gsl::index(collision.point.z / TILE_SIZE);
                         auto new_entity = registry.create();
-                        comp::create_tile(registry, new_entity, editor.current_tile, x, y, z);
+                        comp::create_tile(registry, new_entity, editor.current_tile, comp::TileRotation::None, x, y, z);
                         registry.emplace<comp::InGameTag>(new_entity);
                     }
                 }

@@ -6,7 +6,7 @@
 
 namespace cfu::comp {
 
-constexpr auto MAX_LIGHTS = 4;
+constexpr auto MAX_LIGHTS = 16;
 
 struct DefaultShader {
     Shader shader;

@@ -49,7 +49,7 @@ auto InGameState::on_enter(entt::registry& registry) -> void {
     for (auto i = 0; i < 128; i++) {
         for (auto j = 0; j < 128; j++) {
             auto tile = registry.create();
-            comp::create_tile(registry, tile, comp::TileKind::Floor, i, 0, j);
+            comp::create_tile(registry, tile, comp::TileKind::Floor, comp::TileRotation::None, i, 0, j);
             registry.emplace<comp::InGameTag>(tile);
         }
     }

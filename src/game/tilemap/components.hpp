@@ -63,7 +63,14 @@ struct Grounded {
 };
 
 auto create_map(entt::registry& registry, entt::entity entity, std::size_t tiles_x, std::size_t tiles_y) -> void;
-auto create_tile(entt::registry& registry, entt::entity entity, TileKind kind, gsl::index x, gsl::index y, gsl::index z)
-    -> void;
+auto create_tile(
+    entt::registry& registry,
+    entt::entity entity,
+    TileKind kind,
+    TileRotation rotation,
+    gsl::index x,
+    gsl::index y,
+    gsl::index z
+) -> void;
 
 } // namespace cfu::comp

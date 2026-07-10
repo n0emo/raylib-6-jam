@@ -98,9 +98,16 @@ auto create_map(entt::registry& registry, entt::entity entity, std::size_t tiles
     registry.emplace<HeightMap>(entity, HeightMap::create(tiles_x, tiles_y));
 }
 
-auto create_tile(entt::registry& registry, entt::entity entity, TileKind kind, gsl::index x, gsl::index y, gsl::index z)
-    -> void {
-    registry.emplace<Tile>(entity, kind);
+auto create_tile(
+    entt::registry& registry,
+    entt::entity entity,
+    TileKind kind,
+    TileRotation rotation,
+    gsl::index x,
+    gsl::index y,
+    gsl::index z
+) -> void {
+    registry.emplace<Tile>(entity, kind, rotation);
 
     auto model_id = res::vox::VoxelModelId {};
     auto height = float {};
