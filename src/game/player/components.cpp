@@ -2,9 +2,10 @@
 
 #include <entt/entt.hpp>
 
+#include "../solids/components.hpp"
 #include "../physics/components.hpp"
 #include "../combat/components.hpp"
-#include "../tilemap/components.hpp"
+#include "../level/components.hpp"
 #include "../vox/resource.hpp"
 #include "../vox/components.hpp"
 #include "../data/components.hpp"
@@ -13,30 +14,29 @@ namespace cfu::comp {
 
 using entt::operator""_hs;
 
-auto create_player(entt::registry& registry, entt::entity entity) -> void {
-    const auto& data = registry.ctx().get<comp::GameData>();
+auto create_player(entt::registry& reg, entt::entity e) -> void {
+    const auto& data = reg.ctx().get<comp::GameData>();
     const auto& desc = data.balance.player.evo_1;
-    auto model = registry.ctx().get<res::VoxelModelCache>()[res::vox::Player];
 
-    registry.emplace<Player>(entity);
-    registry.emplace<cfu::comp::Transform>(
-        entity,
-        cfu::comp::Transform {
+    reg.emplace<Player>(e);
+    reg.emplace<comp::Transform>(
+        e,
+        comp::Transform {
             .translation = Vector3(0.0f, 10.0f, 0.0f),
             .rotation = Vector3(0.0f, 1.0f, 0.0f),
             .scale = Vector3(4.0f, 4.0f, 4.0f),
         }
     );
-    registry.emplace<comp::Position>(entity, 0.0f, 0.0f);
-    registry.emplace<comp::Velocity>(entity, 0.0f, 0.0f);
-    registry.emplace<comp::CircleCollider>(entity, 8.0f);
+    reg.emplace<Position>(e, 0.0f, 0.0f);
+    reg.emplace<Velocity>(e, 0.0f, 0.0f);
+    reg.emplace<CircleCollider>(e, 8.0f);
 
-    registry.emplace<Grounded>(entity, 0.0f);
+    reg.emplace<Grounded>(e, 0.0f);
 
-    registry.emplace<Hp>(entity, float(desc.max_hp), float(desc.max_hp));
-    registry.emplace<MoveSpeed>(entity, float(desc.move_speed));
-    registry.emplace<MeleeAttack>(
-        entity,
+    reg.emplace<Hp>(e, float(desc.max_hp), float(desc.max_hp));
+    reg.emplace<MoveSpeed>(e, float(desc.move_speed));
+    reg.emplace<MeleeAttack>(
+        e,
         MeleeAttack {
             .damage = float(desc.damage),
             .attack_speed = float(desc.attack_speed),
@@ -44,7 +44,8 @@ auto create_player(entt::registry& registry, entt::entity entity) -> void {
         }
     );
 
-    registry.emplace<VoxelModel>(entity, model);
+    reg.emplace<VoxelModel>(e, VoxelModel::get(reg, res::vox::Player));
+    reg.emplace<SolidMaterial>(e, WHITE);
 }
 
 } // namespace cfu::comp

@@ -4,7 +4,7 @@
 #include "../physics/components.hpp"
 #include "../combat/components.hpp"
 #include "../camera/components.hpp"
-#include "../tilemap/components.hpp"
+#include "../level/components.hpp"
 #include "./components.hpp"
 
 namespace cfu::systems {

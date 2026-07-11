@@ -5,7 +5,7 @@
 #include "../combat/components.hpp"
 #include "../data/components.hpp"
 #include "../physics/components.hpp"
-#include "../vox/components.hpp"
+#include "../level/components.hpp"
 #include "../vox/resource.hpp"
 
 namespace cfu::comp {
@@ -17,15 +17,15 @@ auto create_enemy(entt::registry& reg, entt::entity e) -> void {
     reg.emplace<Enemy>(e);
     reg.emplace<comp::Transform>(
         e,
-        cfu::comp::Transform {
+        comp::Transform {
             .translation = Vector3(0.0f, 10.0f, 0.0f),
             .rotation = Vector3(0.0f, 1.0f, 0.0f),
             .scale = Vector3(4.0f, 4.0f, 4.0f),
         }
     );
-    reg.emplace<comp::Position>(e, 0.0f, 0.0f);
-    reg.emplace<comp::Velocity>(e, 0.0f, 0.0f);
-    reg.emplace<comp::CircleCollider>(e, 8.0f);
+    reg.emplace<Position>(e, 0.0f, 0.0f);
+    reg.emplace<Velocity>(e, 0.0f, 0.0f);
+    reg.emplace<CircleCollider>(e, 8.0f);
 
     reg.emplace<Grounded>(e, 0.0f);
 
@@ -40,7 +40,8 @@ auto create_enemy(entt::registry& reg, entt::entity e) -> void {
         }
     );
 
-    reg.emplace<VoxelModel>(e, model);
+    // TODO: enemy model
+    // reg.emplace<VoxelModel>(e, );
 }
 
 } // namespace cfu::comp

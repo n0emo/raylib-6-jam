@@ -1,0 +1,11 @@
+{
+  "box_culling": 147200.0,
+  "fovy": 75.0,
+  "lerp": 10.0,
+  "offset_x": 120.0,
+  "offset_y": 120.0,
+  "offset_z": 120.0,
+  "up_x": 0.0,
+  "up_y": 1.0,
+  "up_z": 0.0
+}

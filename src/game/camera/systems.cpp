@@ -16,15 +16,15 @@ auto create_camera(entt::registry& registry, entt::entity entity) -> void {
     registry.emplace<Camera3D>(
         entity,
         Camera3D {
-            .position = d.balance.camera.offset,
+            .position = d.camera.offset,
             .target = Vector3 {},
-            .up = d.balance.camera.up,
-            .fovy = d.balance.camera.fovy,
+            .up = d.camera.up,
+            .fovy = d.camera.fovy,
             .projection = CAMERA_PERSPECTIVE,
         }
     );
-    registry.emplace<comp::CameraLerp>(entity, d.balance.camera.lerp);
-    registry.emplace<comp::CameraOffset>(entity, d.balance.camera.offset);
+    registry.emplace<comp::CameraLerp>(entity, d.camera.lerp);
+    registry.emplace<comp::CameraOffset>(entity, d.camera.offset);
 }
 
 auto update_camera(entt::registry& registry) -> void {

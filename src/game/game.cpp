@@ -6,6 +6,7 @@
 
 #include <rlImGui.h>
 
+#include "./level/systems.hpp"
 #include "./constants.hpp"
 #include "./data/systems.hpp"
 #include "./dev/systems.hpp"
@@ -19,7 +20,7 @@ namespace cfu {
 
 auto Game::init(Game& self) -> void {
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Cmake");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Chimera Factory Unleash");
     SetTargetFPS(60);
     InitAudioDevice();
     rlSetClipPlanes(20.0f, 5000.0f);
@@ -27,6 +28,7 @@ auto Game::init(Game& self) -> void {
 
     systems::load_game_data_from_disk(self.registry);
     systems::reload_shaders(self.registry);
+    systems::setup_level_cache(self.registry);
 
     systems::setup_vox_model_cache(self.registry);
     systems::reload_voxel_models(self.registry);

@@ -21,7 +21,7 @@ auto draw_solids(entt::registry& registry) -> void {
     auto view = registry.view<const cfu::comp::Transform, const comp::Cube, const comp::SolidMaterial>();
     for (const auto [entity, transform, cube, material] : view.each()) {
         const auto position_2d = Vector2(transform.translation.x, transform.translation.z);
-        if (Vector2DistanceSqr(camera_position, position_2d) > d.balance.camera.box_culling) continue;
+        if (Vector2DistanceSqr(camera_position, position_2d) > d.camera.box_culling) continue;
 
         rlPushMatrix();
         const auto position = transform.translation;

@@ -9,8 +9,9 @@
 #include "../data/components.hpp"
 #include "../physics/components.hpp"
 #include "../raymath.hpp"
-#include "./resource.hpp"
+#include "../solids/components.hpp"
 #include "./components.hpp"
+#include "./resource.hpp"
 
 namespace cfu::systems {
 
@@ -39,10 +40,10 @@ auto draw_voxel_models(entt::registry& registry, Shader shader) -> void {
     const auto camera_position_3d = registry.get<Camera3D>(camera_entity).position - camera_offset.offset;
     const auto camera_position = Vector2(camera_position_3d.x, camera_position_3d.z);
 
-    auto view = registry.view<comp::VoxelModel, comp::Transform>();
-    for (auto [entity, model, transform] : view.each()) {
+    auto view = registry.view<comp::VoxelModel, comp::Transform, comp::SolidMaterial>();
+    for (auto [entity, model, transform, material] : view.each()) {
         const auto position_2d = Vector2(transform.translation.x, transform.translation.z);
-        if (Vector2DistanceSqr(camera_position, position_2d) > d.balance.camera.box_culling) continue;
+        if (Vector2DistanceSqr(camera_position, position_2d) > d.camera.box_culling) continue;
 
         const auto pitch = transform.rotation.x;
         const auto yaw = transform.rotation.y;
@@ -55,7 +56,8 @@ auto draw_voxel_models(entt::registry& registry, Shader shader) -> void {
         for (auto i = 0; i < model.handle->model.materialCount; i++) {
             model.handle->model.materials[i].shader = shader;
         }
-        DrawModelEx(model.handle->model, transform.translation, axis, angle, transform.scale, WHITE);
+        const auto color = material.color;
+        DrawModelEx(model.handle->model, transform.translation, axis, angle, transform.scale, color);
     }
 }
 

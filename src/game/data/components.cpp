@@ -133,47 +133,13 @@ void from_json(const json& j, CameraData& d) {
 void to_json(json& j, const BalanceData& d) {
     j = json {
         {"player", d.player},
-        {"camera", d.camera},
+        {"enemies", d.enemies},
     };
 }
 
 void from_json(const json& j, BalanceData& d) {
     d.player = j.value("player", PlayerData {});
-    d.camera = j.value("camera", CameraData {});
-}
-
-void to_json(json& j, const TileData& d) {
-    j = json {
-        {"x", d.x},
-        {"y", d.y},
-        {"z", d.z},
-        {"kind", tile_kind_to_string(d.kind)},
-        {"rotation", tile_rotation_to_string(d.rotation)},
-    };
-}
-
-void from_json(const json& j, TileData& d) {
-    d.x = j.value("x", 0);
-    d.y = j.value("y", 0);
-    d.z = j.value("z", 0);
-    d.kind = tile_kind_from_string(j.value("kind", "wall"));
-    d.rotation = tile_rotation_from_string(j.value("rotation", "none"));
-}
-
-void to_json(json& j, const LevelData& d) {
-    j = json {
-        {"map_size_x", d.map_size_x},
-        {"map_size_y", d.map_size_y},
-        {"map_size_z", d.map_size_z},
-        {"map_tiles", d.map_tiles},
-    };
-}
-
-void from_json(const json& j, LevelData& d) {
-    d.map_size_x = j.value("map_size_x", 0);
-    d.map_size_y = j.value("map_size_y", 0);
-    d.map_size_z = j.value("map_size_z", 0);
-    d.map_tiles = j.value("map_tiles", std::vector<TileData> {});
+    d.enemies = j.value("enemies", EnemiesData {});
 }
 
 } // namespace cfu::comp

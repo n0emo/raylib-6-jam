@@ -3,7 +3,7 @@
 #include <entt/entity/registry.hpp>
 #include <entt_editor.hpp>
 
-#include "../tilemap/components.hpp"
+#include <level/resource.hpp>
 
 namespace cfu::comp {
 
@@ -28,12 +28,23 @@ struct TileMapEditor {
     bool show_window = false;
     bool enabled = false;
     TileMapEditorMode mode = TileMapEditorMode::Free;
-    TileKind current_tile = TileKind::Wall;
+    res::TileKind current_tile = res::TileKind::Wall;
 };
 
 struct DataEditor {
     bool show_window = false;
     bool update_realtime = true;
 };
+
+struct Console {
+    bool show_window = false;
+    std::array<char, 128> command_buf {};
+    std::string output {};
+    bool scroll_output = false;
+    gsl::index history_index {};
+    std::vector<std::string> command_history {};
+};
+
+struct CursorCube {};
 
 } // namespace cfu::comp

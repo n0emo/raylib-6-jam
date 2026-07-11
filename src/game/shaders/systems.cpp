@@ -145,10 +145,10 @@ auto update_lighting_shader(entt::registry& registry) -> void {
 
     auto& lighting_shader = registry.ctx().get<comp::LightingShader>();
     const auto ambient_color = std::array {
-        (float)d.balance.camera.ambient.r / (float)255,
-        (float)d.balance.camera.ambient.g / (float)255,
-        (float)d.balance.camera.ambient.b / (float)255,
-        (float)d.balance.camera.ambient.a / (float)255
+        (float)d.camera.ambient.r / (float)255,
+        (float)d.camera.ambient.g / (float)255,
+        (float)d.camera.ambient.b / (float)255,
+        (float)d.camera.ambient.a / (float)255
     };
     SetShaderValue(
         lighting_shader.shader,

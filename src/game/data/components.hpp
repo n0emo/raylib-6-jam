@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nlohmann/json_fwd.hpp>
-#include <tilemap/components.hpp>
+#include <raylib.h>
 
 namespace cfu::comp {
 
@@ -84,36 +84,14 @@ void from_json(const json& j, CameraData& d);
 struct BalanceData {
     PlayerData player {};
     EnemiesData enemies {};
-    CameraData camera {};
 };
 
 void to_json(json& j, const BalanceData& d);
 void from_json(const json& j, BalanceData& d);
 
-struct TileData {
-    int x {};
-    int y {};
-    int z {};
-    TileKind kind {};
-    TileRotation rotation {};
-};
-
-void to_json(json& j, const TileData& d);
-void from_json(const json& j, TileData& d);
-
-struct LevelData {
-    int map_size_x {};
-    int map_size_y {};
-    int map_size_z {};
-    std::vector<TileData> map_tiles {};
-};
-
-void to_json(json& j, const LevelData& d);
-void from_json(const json& j, LevelData& d);
-
 struct GameData {
     BalanceData balance {};
-    std::array<LevelData, 3> levels {};
+    CameraData camera {};
 };
 
 } // namespace cfu::comp

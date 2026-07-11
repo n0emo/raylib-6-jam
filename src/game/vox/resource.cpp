@@ -6,6 +6,27 @@
 
 namespace cfu::res {
 
+auto model_id_to_string(vox::VoxelModelId id) -> gsl::czstring {
+    switch (id) {
+     #define CFU_X(name, str)                                                                                          \
+    case vox::VoxelModelId::name: {                                                                                    \
+        return str;                                                                                                    \
+    }
+        RES_VOX_ID_LIST
+     #undef CFU_X
+        default:
+            return "error.vox";
+    }
+}
+
+auto model_id_from_string(std::string_view string) -> vox::VoxelModelId {
+    #define CFU_X(name, str)                                                                                           \
+    if ((str) == string) return vox::VoxelModelId::name;
+    RES_VOX_ID_LIST
+    #undef CFU_X
+    return vox::Error;
+}
+
 VoxelModel::VoxelModel(std::string_view path) {
     auto final_path = std::format("assets/vox/{}", path);
     this->model = LoadModel(final_path.c_str());

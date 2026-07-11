@@ -16,7 +16,15 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./combat/components.cpp
     ./data/components.cpp
     ./data/systems.cpp
+    ./dev/commands.cpp
+    ./dev/commands_level.cpp
+    ./dev/commands_state.cpp
     ./dev/systems.cpp
+    ./dev/systems_console.cpp
+    ./dev/systems_data_editor.cpp
+    ./dev/systems_dev_panel.cpp
+    ./dev/systems_entity_editor.cpp
+    ./dev/systems_level_editor.cpp
     ./dev/utils.cpp
     ./enemy/components.cpp
     ./enemy/systems.cpp
@@ -24,6 +32,10 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./fonts/systems.cpp
     ./game.cpp
     ./in_game/state.cpp
+    ./level/components.cpp
+    ./level/resource.cpp
+    ./level/systems.cpp
+    ./level/tile_index.cpp
     ./main_menu/state.cpp
     ./physics/components.cpp
     ./physics/systems.cpp
@@ -39,11 +51,13 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./states.cpp
     ./textures/resource.cpp
     ./textures/systems.cpp
-    ./tilemap/components.cpp
-    ./tilemap/systems.cpp
     ./vox/resource.cpp
     ./vox/systems.cpp
 )
+
+set_source_files_properties(./plugin.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+
+target_precompile_headers(${PROJECT_NAME}-game PRIVATE ./pch.hpp)
 
 target_include_directories(${PROJECT_NAME}-game PUBLIC .)
 
