@@ -1,13 +1,39 @@
 #pragma once
 
+#include <string_view>
+#include "entt/resource/cache.hpp"
+#include "raylib.h"
 namespace cfu::res {
 
 namespace fonts {
-    // TODO: RES_FONT_ID_LIST
+    #define RES_FONT_ID_LIST\
+        CFU_X(Roboto, "Roboto-VariableFont.ttf")                                                                                            \
+        CFU_X(Yuy,"YuyuShort-Regular.ttf")
+
+        enum FontId {
+
+        #define CFU_X(name, ...) name,
+            RES_FONT_ID_LIST
+        #undef CFU_X
+
+        };
+
 }
 
-// TODO: struct CfuFont
+struct CfuFont{
+    Font font {};
 
-// using FontCache = entt::resource_cache<CfuFont>;
+    CfuFont(std::string_view path);
+    CfuFont(CfuFont&& other) noexcept;
+    auto operator=(CfuFont&& other) noexcept -> CfuFont&;
+    ~CfuFont();
+
+    CfuFont(const CfuFont&) = delete;
+    auto operator=(const CfuFont&) -> CfuFont& = delete;
+
+    operator Font();
+};
+
+using FontCache = entt::resource_cache<CfuFont>;
 
 } // namespace cfu::res

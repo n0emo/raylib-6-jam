@@ -9,6 +9,8 @@
 #include "../states.hpp"
 #include "../vox/systems.hpp"
 #include "./components.hpp"
+#include "./utils.hpp"
+#include "fonts/systems.hpp"
 
 namespace cfu::systems {
 
@@ -38,7 +40,7 @@ auto draw_dev(entt::registry& registry) -> void {
     if (IsKeyPressed(KEY_F1)) {
         systems::reload_shaders(registry);
         systems::reload_voxel_models(registry);
-        // TODO: reload_audio
+        systems::reload_fonts(registry);
         // TODO: reload_textures
         // TODO: reload_fonts
     }

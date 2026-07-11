@@ -15,6 +15,7 @@
 #include "./shaders/systems.hpp"
 #include "./states.hpp"
 #include "./vox/systems.hpp"
+#include "fonts/systems.hpp"
 
 namespace cfu {
 
@@ -32,6 +33,9 @@ auto Game::init(Game& self) -> void {
 
     systems::setup_vox_model_cache(self.registry);
     systems::reload_voxel_models(self.registry);
+
+    systems::setup_font_cache(self.registry);
+    systems::reload_fonts(self.registry);
 
     systems::setup_main_render_texture(self.registry);
 
