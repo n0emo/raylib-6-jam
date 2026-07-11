@@ -72,7 +72,14 @@ Subcommands:
             return format("Created tile ({}, {}, {})\n", x, y, z);
         });
     } else if (cmd == "d" || cmd == "delete") {
-        return tile_or_region_action(reg, mode, args, [](auto x, auto y, auto z) -> string {
+        return tile_or_region_action(reg, mode, args, [&](auto x, auto y, auto z) -> string {
+            auto view = reg.view<comp::LevelTile>();
+            for (auto [e, tile] : view.each()) {
+                if (tile.index == TileIndex(x, y, z)) {
+                    reg.destroy(e);
+                    break;
+                }
+            }
             return format("Deleted tile ({}, {}, {})\n", x, y, z);
         });
     } else if (cmd == "r" || cmd == "rotate") {
